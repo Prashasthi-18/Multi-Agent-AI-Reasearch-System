@@ -1,0 +1,49 @@
+# Core LangChain
+langchain
+langchain-core
+langchain-community
+
+# Mistral Integration
+langchain-mistralai
+mistralai
+
+# Search Tool
+tavily-python
+
+# Web Scraping
+beautifulsoup4
+lxml
+requests
+
+# Environment Variables
+python-dotenv
+
+# Data Validation
+pydantic
+
+# Token Handling
+tiktoken
+
+# Async Support
+aiohttp
+
+# Optional Data Processing
+pandas
+numpy
+
+# Logging and Utilities
+typing-extensions
+
+# LangSmith (optional but highly recommended)
+langsmith
+
+# Graph-based Multi-Agent Workflows (optional but useful)
+langgraph
+
+# FastAPI (if you later create an API)
+fastapi
+uvicorn
+
+# Jupyter (optional for testing)
+jupyter
+ipykernel
