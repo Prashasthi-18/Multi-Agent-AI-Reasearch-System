@@ -42,7 +42,9 @@ The pipeline runs 4 agents in sequence:
 ```
 ## Live Demo
 
-[View the deployed app]([https://your-app-link.streamlit.app](https://multi-agent-ai-reasearch-system-prsmutrkynresnhkvammbw.streamlit.app/))
+## 🚀 Live Demo
+
+[Try the App](https://multi-agent-ai-reasearch-system-prsmutrkynresnhkvammbw.streamlit.app/)
 
 ## Author
 Made by Prashasthi-18
