@@ -48,3 +48,6 @@ uvicorn
 # Jupyter (optional for testing)
 jupyter
 ipykernel
+
+streamlit
+rich

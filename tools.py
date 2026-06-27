@@ -1,71 +1,81 @@
 from langchain.tools import tool
 from langchain_tavily import TavilySearch
-from dotenv import load_dotenv
+
 from bs4 import BeautifulSoup
-from rich import print
+from dotenv import load_dotenv
 
 import requests
 import streamlit as st
 import os
 
+# Load local .env (works locally)
 load_dotenv()
 
-api_key = st.secrets.get(
-    "TAVILY_API_KEY",
-    os.getenv("TAVILY_API_KEY")
-)
 
+# Read API key
+try:
+    TAVILY_API_KEY = st.secrets["TAVILY_API_KEY"]
+except Exception:
+    TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+
+# Initialize Tavily Search
 tavily = TavilySearch(
-    api_key=api_key,
+    api_key=TAVILY_API_KEY,
     max_results=5
 )
+
 
 @tool
 def web_search(query: str) -> str:
     """
-    Search for recent and reliable information on a topic.
-    Returns titles, URLs and snippets(summary).
+    Search for recent and reliable information.
+    Returns titles, URLs and snippets.
     """
 
-    results = tavily.invoke(query)
-    # print(type(results))
-    # print(results)
+    try:
+        results = tavily.invoke(query)
 
-    output = []
+        output = []
 
-    for r in results['results']:
-        output.append(
-            f"Title: {r['title']}\n"
-            f"URL: {r['url']}\n"
-            f"Snippet: {r['content'][:300]}\n"
-        )
+        for r in results["results"]:
+            output.append(
+                f"Title: {r['title']}\n"
+                f"URL: {r['url']}\n"
+                f"Snippet: {r['content'][:300]}"
+            )
 
-    return "\n-------------------------\n".join(output)
+        return "\n\n-----------------------------\n\n".join(output)
 
-#result = web_search.invoke("What are the recent news of war?")
-#print(result)
+    except Exception as e:
+        return f"Search Error: {str(e)}"
+
 
 @tool
 def scrape_url(url: str) -> str:
     """
-    Scrape and return clean text content from a given URL for deeper reading.
+    Scrape and return clean text from a webpage.
     """
-    try:  #Websites may fail → avoid crashing program
-        resp = requests.get(
+
+    try:
+
+        response = requests.get(
             url,
-            timeout=8,
-            headers={"User-Agent": "Mozilla/5.0"}  #Some websites block bots. This makes request look like browser.
+            timeout=10,
+            headers={
+                "User-Agent": "Mozilla/5.0"
+            }
         )
 
-        soup = BeautifulSoup(resp.text, "html.parser")
+        response.raise_for_status()
 
-        for tag in soup(["script", "style", "nav", "footer"]):
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        for tag in soup(["script", "style", "nav", "footer", "header"]):
             tag.decompose()
 
-        return soup.get_text(separator=" ", strip=True)[:3000]
+        text = soup.get_text(separator=" ", strip=True)
+
+        return text[:3000]
 
     except Exception as e:
         return f"Could not scrape URL: {str(e)}"
-    
-#scrape_url.invoke("https://docs.langchain.com/oss/python/langchain/overview?utm_source=chatgpt.com")
-
