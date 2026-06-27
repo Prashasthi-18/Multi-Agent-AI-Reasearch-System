@@ -5,12 +5,18 @@ from bs4 import BeautifulSoup
 from rich import print
 
 import requests
+import streamlit as st
 import os
 
 load_dotenv()
 
+api_key = st.secrets.get(
+    "TAVILY_API_KEY",
+    os.getenv("TAVILY_API_KEY")
+)
+
 tavily = TavilySearch(
-    api_key=os.getenv("TAVILY_API_KEY"),
+    api_key=api_key,
     max_results=5
 )
 
@@ -61,5 +67,5 @@ def scrape_url(url: str) -> str:
     except Exception as e:
         return f"Could not scrape URL: {str(e)}"
     
-res = scrape_url.invoke("https://docs.langchain.com/oss/python/langchain/overview?utm_source=chatgpt.com")
-print(res)
+#scrape_url.invoke("https://docs.langchain.com/oss/python/langchain/overview?utm_source=chatgpt.com")
+
