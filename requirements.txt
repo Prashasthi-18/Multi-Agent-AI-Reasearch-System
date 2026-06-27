@@ -9,6 +9,7 @@ mistralai
 
 # Search Tool
 tavily-python
+langchain-tavily
 
 # Web Scraping
 beautifulsoup4
