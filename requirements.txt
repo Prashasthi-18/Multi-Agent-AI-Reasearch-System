@@ -51,3 +51,4 @@ ipykernel
 
 streamlit
 rich
+markdown
